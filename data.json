@@ -1,0 +1,146 @@
+{
+  "personal": {
+    "name": "Souma Deep Pal",
+    "title": "Cybersecurity Student & Penetration Testing Intern",
+    "bio": "A cybersecurity student focused on networking, vulnerability assessment, system security, and practical defensive tooling.",
+    "email": "soumadeeppal33@gmail.com",
+    "phone": "+91 73845 68795",
+    "location": "India"
+  },
+  "about": {
+    "para1": "I learn security by building, testing, and observing real systems. I am currently pursuing Cyber Security at Supreme Institute of Management & Technology while gaining hands-on experience in penetration testing, monitoring, networking tools, vulnerability assessment, and system security.",
+    "para2": "My work spans Python security utilities, packet analysis, ARP spoofing detection, cyber hygiene, and ethical hacking practice through CTF challenges. I believe in a practical approach to defensive tooling and network defense."
+  },
+  "experience": [
+    {
+      "date": "Jun 2025 - Present",
+      "role": "Penetration Testing Intern",
+      "org": "Infotact Solutions",
+      "desc": "Supporting penetration testing, monitoring, networking, vulnerability assessment, and system security tasks."
+    },
+    {
+      "date": "Jun 12 - Jul 19, 2025",
+      "role": "Experiential Learning Program",
+      "org": "My Bharat // Cyber Security",
+      "desc": "Completed focused training in cyber hygiene, cyber awareness, phishing, malware, password security, privacy, and responsible digital citizenship."
+    }
+  ],
+  "education": [
+    {
+      "date": "2024 - 2027",
+      "title": "B.Sc. in Cyber Security",
+      "institution": "Supreme Institute of Management & Technology",
+      "desc": "Participating in technical events, workshops, and cybersecurity awareness activities."
+    },
+    {
+      "date": "2024",
+      "title": "Higher Secondary (WBCHSE)",
+      "institution": "Itachuna Sree Narayan Institution (H.S)",
+      "desc": "Foundational education."
+    }
+  ],
+  "certifications": [
+    {
+      "date": "08/2026",
+      "name": "Pre Security Learning Path",
+      "issuer": "TryHackMe",
+      "image": ""
+    },
+    {
+      "date": "Current",
+      "name": "CCNA – Training",
+      "issuer": "Aptech Learning",
+      "image": ""
+    },
+    {
+      "date": "2025",
+      "name": "Networking Basics",
+      "issuer": "Cisco Networking Academy",
+      "image": ""
+    },
+    {
+      "date": "2025",
+      "name": "Introduction to Cybersecurity",
+      "issuer": "Cisco Networking Academy",
+      "image": ""
+    },
+    {
+      "date": "2025",
+      "name": "Python Basic",
+      "issuer": "HackerRank",
+      "image": ""
+    },
+    {
+      "date": "2025",
+      "name": "Python Course",
+      "issuer": "Great Learning",
+      "image": ""
+    },
+    {
+      "date": "2025",
+      "name": "Java Basic",
+      "issuer": "HackerRank",
+      "image": ""
+    }
+  ],
+  "skills": [
+    {
+      "category": "Network Defense",
+      "tags": [
+        "Wireshark",
+        "Packet Analysis",
+        "Nmap",
+        "Network Scanning",
+        "ARP Spoofing Detection"
+      ]
+    },
+    {
+      "category": "Security Automation",
+      "tags": [
+        "Python",
+        "C",
+        "Basic Java",
+        "SHA-256 Signatures",
+        "File Scanning & Quarantine"
+      ]
+    },
+    {
+      "category": "Security Operations",
+      "tags": [
+        "Linux OS",
+        "Windows OS",
+        "Burp Suite",
+        "Cyber Hygiene",
+        "Security Awareness"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "Basic Antivirus Signature Scanner",
+      "desc": "Python antivirus simulation using signature-based detection, SHA-256 comparison, automated scanning, and quarantine functionalities.",
+      "tags": [
+        "Python",
+        "SHA-256",
+        "Defensive Tool"
+      ]
+    },
+    {
+      "title": "Packet Sniffer & ARP Spoof Detector",
+      "desc": "Real-time traffic analysis with IP-to-MAC mapping checks and automated alerts for suspicious ARP activity and potential MITM attacks.",
+      "tags": [
+        "Networking",
+        "Packets",
+        "Detection"
+      ]
+    }
+  ],
+  "contact": {
+    "heading": "Get In Touch",
+    "desc": "I am open to cybersecurity internships, learning opportunities, technical collaboration, and conversations with people building a safer digital world. Whether you have a question or just want to say hi, my inbox is open."
+  },
+  "social": {
+    "github": "https://github.com/souma2005-cys/",
+    "linkedin": "https://www.linkedin.com/in/soumadeeppal/"
+  }
+}

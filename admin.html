@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Admin | Souma Deep Pal</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root { --admin-bg:#080b0d; --admin-surface:#101619; --admin-surface-raised:#151c20; --admin-border:rgba(255,255,255,.09); --admin-border-strong:rgba(0,255,136,.28); --admin-text:#edf5f1; --admin-muted:#82918d; --admin-accent:#00e887; --admin-danger:#ff6688; }
+        .admin-page { min-height:100vh; background:radial-gradient(circle at 80% 0%, rgba(0,232,135,.07), transparent 28rem), var(--admin-bg); color:var(--admin-text); font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+
+        /* Admin is loaded with the shared public stylesheet. Explicitly reset shared nav/layout rules here so
+           the public site's fixed navbar cannot overlap the dashboard. */
+        .admin-page .admin-layout { display:flex; min-height:100vh; width:100%; }
+        .admin-page .admin-sidebar { position:sticky; top:0; align-self:flex-start; width:250px; min-width:250px; height:100vh; overflow-y:auto; }
+        .admin-page .admin-nav { position:static; top:auto; left:auto; width:auto; height:auto; min-height:0; display:grid; gap:5px; background:transparent; backdrop-filter:none; z-index:auto; }
+        .admin-page .admin-nav button { display:block; width:100%; height:auto; margin:0; }
+        .admin-page .admin-main { flex:1 1 auto; width:auto; max-width:none; min-width:0; padding:28px clamp(20px, 4vw, 56px) 64px; }
+        .admin-page .admin-toolbar { position:sticky; top:0; z-index:10; background:linear-gradient(180deg, rgba(8,11,13,.98) 0%, rgba(8,11,13,.94) 78%, rgba(8,11,13,0) 100%); }
+        .admin-page .admin-panel { width:100%; max-width:1100px; margin:0 auto; }
+        .admin-page .admin-message { position:sticky; bottom:18px; z-index:30; width:max-content; max-width:100%; padding:10px 13px; border:1px solid var(--admin-border-strong); border-radius:8px; background:rgba(8,11,13,.96); box-shadow:0 12px 35px rgba(0,0,0,.3); }
+        .admin-page [hidden] { display:none !important; }
+        .admin-login { min-height:100vh; display:grid; place-items:center; padding:24px; }
+        .admin-login-card { width:min(420px,100%); padding:42px; background:rgba(16,22,25,.92); border:1px solid var(--admin-border-strong); border-radius:18px; box-shadow:0 28px 90px rgba(0,0,0,.42); }
+        .admin-login-card h1 { margin:0 0 9px; letter-spacing:-.03em; font-size:30px; }
+        .admin-login-card > p:not([style]) { color:var(--admin-muted); margin:0 0 28px; }
+        .admin-layout { display:flex; min-height:100vh; }
+        .admin-sidebar { width:260px; flex:0 0 260px; padding:30px 18px; background:rgba(13,18,20,.9); border-right:1px solid var(--admin-border); }
+        .admin-sidebar h1 { color:var(--admin-text); font-size:17px; letter-spacing:-.02em; margin:0 10px 34px; }
+        .admin-sidebar h1::before { content:""; display:inline-block; width:9px; height:9px; margin-right:9px; border-radius:50%; background:var(--admin-accent); box-shadow:0 0 14px var(--admin-accent); }
+        .admin-nav { display:grid; gap:5px; }
+        .admin-nav button { position:relative; padding:12px 14px 12px 18px; border:0; border-radius:8px; background:transparent; color:var(--admin-muted); cursor:pointer; text-align:left; font:500 13px Inter,-apple-system,sans-serif; transition:background .2s,color .2s,transform .2s; }
+        .admin-nav button::before { content:""; position:absolute; left:0; top:10px; bottom:10px; width:3px; border-radius:3px; background:transparent; }
+        .admin-nav button:hover { color:var(--admin-text); background:rgba(255,255,255,.04); transform:translateX(2px); }
+        .admin-nav button.active { color:var(--admin-accent); background:rgba(0,232,135,.1); }
+        .admin-nav button.active::before { background:var(--admin-accent); box-shadow:0 0 12px rgba(0,232,135,.65); }
+        .admin-main { width:min(1060px,100%); padding:42px clamp(22px,5vw,62px); }
+        .admin-toolbar { position:relative; display:flex; justify-content:space-between; align-items:flex-end; gap:24px; padding-top:34px; padding-bottom:24px; margin-bottom:28px; border-bottom:1px solid var(--admin-border); }
+        .admin-toolbar h2 { margin:0; font-size:28px; letter-spacing:-.035em; }
+        .admin-toolbar::before { content:"DASHBOARD / CONTENT"; position:absolute; left:0; top:7px; color:var(--admin-accent); font:10px "Courier New",monospace; letter-spacing:1.6px; }
+        .admin-actions { display:flex; gap:10px; flex-wrap:wrap; }
+        .admin-actions .btn, .admin-panel > .btn { border-radius:7px; font-size:12px; padding:10px 15px; }
+        .admin-panel { display:none; background:rgba(16,22,25,.9); border:1px solid var(--admin-border); border-radius:14px; padding:30px; box-shadow:0 18px 55px rgba(0,0,0,.12); }
+        .admin-panel.active { display:block; animation:admin-panel-in .25s ease-out; }
+        @keyframes admin-panel-in { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+        .admin-panel h3 { margin:0 0 27px; font-size:19px; letter-spacing:-.02em; }
+        .admin-field { margin-bottom:20px; }
+        .admin-field label { display:block; color:var(--admin-muted); font-size:11px; font-weight:600; letter-spacing:.04em; margin-bottom:8px; }
+        .admin-field input, .admin-field textarea { width:100%; padding:12px 13px; border:1px solid var(--admin-border); border-radius:7px; outline:0; background:#0b1012; color:var(--admin-text); font:14px Inter,-apple-system,sans-serif; transition:border .2s,box-shadow .2s; }
+        .admin-field textarea { resize:vertical; min-height:105px; line-height:1.6; }
+        .admin-field input:focus, .admin-field textarea:focus { border-color:var(--admin-accent); box-shadow:0 0 0 3px rgba(0,232,135,.1); }
+        .admin-list { display:grid; gap:16px; margin-bottom:20px; }
+        .admin-item { position:relative; padding:22px; border:1px solid var(--admin-border); border-radius:10px; background:rgba(8,11,13,.72); }
+        .admin-item::before { content:""; display:block; width:26px; height:3px; margin-bottom:18px; border-radius:3px; background:var(--admin-accent); opacity:.7; }
+        .admin-item .remove-item { position:absolute; top:18px; right:18px; color:var(--admin-danger); border-color:rgba(255,102,136,.35); }
+        .admin-grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+        .admin-preview { display:block; max-width:170px; max-height:100px; margin-top:10px; border:1px solid var(--admin-border); border-radius:6px; object-fit:cover; }
+        .admin-message { color:var(--admin-accent); font:12px "Courier New",monospace; margin:16px 0 0; }
+        @media (max-width:800px) {
+            .admin-page .admin-layout { display:block; }
+            .admin-page .admin-sidebar { position:relative; top:auto; width:100%; min-width:0; height:auto; max-height:none; padding:18px 14px; border-right:0; border-bottom:1px solid var(--admin-border); overflow:visible; }
+            .admin-page .admin-sidebar h1 { margin:0 8px 18px; }
+            .admin-page .admin-nav { display:flex; overflow-x:auto; padding-bottom:2px; gap:6px; scrollbar-width:thin; }
+            .admin-page .admin-nav button { width:auto; flex:0 0 auto; white-space:nowrap; }
+            .admin-page .admin-main { padding:18px 14px 42px; }
+            .admin-page .admin-toolbar { position:relative; align-items:flex-start; flex-direction:column; padding-top:8px; }
+            .admin-page .admin-toolbar::before { position:static; order:-1; margin:0 0 8px; }
+            .admin-page .admin-grid-3 { grid-template-columns:1fr; }
+            .admin-page .admin-item .remove-item { position:static; margin-bottom:15px; }
+            .admin-page .admin-actions { width:100%; }
+            .admin-page .admin-actions .btn { flex:1 1 140px; }
+        }
+        @media (max-width:480px) { .admin-login-card { padding:28px 22px; } .admin-panel { padding:22px 16px; } }
+    </style>
+</head>
+<body class="admin-page">
+    <div id="admin-login" class="admin-login">
+        <div class="admin-login-card">
+            <p class="admin-eyebrow">PRIVATE AREA</p>
+            <h1>Portfolio Admin</h1>
+            <p>Sign in to manage your portfolio.</p>
+            <form id="admin-login-form">
+                <div class="admin-field"><label for="admin-password">Password</label><input id="admin-password" type="password" autocomplete="current-password" required></div>
+                <button class="btn primary" type="submit">Login</button>
+                <p id="admin-login-error" class="admin-error" hidden>Incorrect password.</p>
+            </form>
+        </div>
+    </div>
+    <div id="admin-layout" class="admin-layout" hidden>
+        <aside class="admin-sidebar">
+            <h1>Portfolio Admin</h1>
+            <nav class="admin-nav" aria-label="Admin sections">
+                <button class="active" data-panel="personal">Personal Info</button>
+                <button data-panel="about">About</button>
+                <button data-panel="experience">Experience</button>
+                <button data-panel="education">Education</button>
+                <button data-panel="certifications">Certifications</button>
+                <button data-panel="skills">Skills</button>
+                <button data-panel="projects">Projects</button>
+                <button data-panel="contact">Contact & Social</button>
+                <button data-panel="settings">Settings</button>
+            </nav>
+        </aside>
+        <main class="admin-main">
+            <header class="admin-toolbar">
+                <h2>Content Management</h2>
+                <div class="admin-actions">
+                    <button id="save-admin" class="btn primary" type="button">Save Changes</button>
+                    <button id="logout-admin" class="btn secondary" type="button">Log out</button>
+                </div>
+            </header>
+
+            <section class="admin-panel active" data-section="personal">
+                <h3>Personal Info</h3>
+                <div class="admin-field"><label for="p-name">Name</label><input id="p-name"></div>
+                <div class="admin-field"><label for="p-title">Title</label><input id="p-title"></div>
+                <div class="admin-field"><label for="p-bio">Bio</label><textarea id="p-bio"></textarea></div>
+                <div class="admin-grid-3">
+                    <div class="admin-field"><label for="p-email">Email</label><input id="p-email" type="email"></div>
+                    <div class="admin-field"><label for="p-phone">Phone</label><input id="p-phone"></div>
+                    <div class="admin-field"><label for="p-location">Location</label><input id="p-location"></div>
+                </div>
+            </section>
+
+            <section class="admin-panel" data-section="about">
+                <h3>About Section</h3>
+                <div class="admin-field"><label for="a-para1">Paragraph 1</label><textarea id="a-para1"></textarea></div>
+                <div class="admin-field"><label for="a-para2">Paragraph 2</label><textarea id="a-para2"></textarea></div>
+            </section>
+
+            <section class="admin-panel" data-section="experience">
+                <h3>Experience</h3><div id="experience-list" class="admin-list"></div>
+                <button class="btn secondary add-list" data-type="experience" type="button">+ Add Experience</button>
+            </section>
+            <section class="admin-panel" data-section="education">
+                <h3>Education</h3><div id="education-list" class="admin-list"></div>
+                <button class="btn secondary add-list" data-type="education" type="button">+ Add Education</button>
+            </section>
+            <section class="admin-panel" data-section="certifications">
+                <h3>Certifications</h3><div id="certifications-list" class="admin-list"></div>
+                <button class="btn secondary add-list" data-type="certifications" type="button">+ Add Certification</button>
+            </section>
+            <section class="admin-panel" data-section="skills">
+                <h3>Skills</h3><div id="skills-list" class="admin-list"></div>
+                <button class="btn secondary add-list" data-type="skills" type="button">+ Add Skill Category</button>
+            </section>
+            <section class="admin-panel" data-section="projects">
+                <h3>Projects</h3><div id="projects-list" class="admin-list"></div>
+                <button class="btn secondary add-list" data-type="projects" type="button">+ Add Project</button>
+            </section>
+
+            <section class="admin-panel" data-section="contact">
+                <h3>Contact & Social</h3>
+                <div class="admin-field"><label for="c-heading">Heading</label><input id="c-heading"></div>
+                <div class="admin-field"><label for="c-desc">Description</label><textarea id="c-desc"></textarea></div>
+                <div class="admin-field"><label for="s-github">GitHub URL</label><input id="s-github" type="url"></div>
+                <div class="admin-field"><label for="s-linkedin">LinkedIn URL</label><input id="s-linkedin" type="url"></div>
+            </section>
+            <section class="admin-panel" data-section="settings">
+                <h3>Settings</h3>
+                <div class="admin-field"><label for="new-password">Change Admin Password</label><input id="new-password" type="password" placeholder="Leave blank to keep current"></div>
+            </section>
+            <p id="admin-message" class="admin-message" hidden></p>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
