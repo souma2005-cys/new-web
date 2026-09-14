@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 import { getStore } from '@netlify/blobs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const STORE = getStore({ name: 'souma-portfolio', consistency: 'strong' });
 const DATA_KEY = 'data.json';
@@ -25,7 +26,10 @@ export async function getData() {
   const stored = await STORE.get(DATA_KEY, { type: 'json' });
   if (stored) return stored;
   try {
-    const file = await fs.readFile(path.join(process.cwd(), 'data.json'), 'utf8');
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const projectRoot = path.join(__dirname, '../../');
+    const file = await fs.readFile(path.join(projectRoot, 'data.json'), 'utf8');
     const parsed = JSON.parse(file);
     await STORE.setJSON(DATA_KEY, parsed);
     return parsed;
